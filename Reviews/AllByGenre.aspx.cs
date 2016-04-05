@@ -4,11 +4,19 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using PlanetWroxModel;
 
 public partial class Reviews_AllByGenre : BasePage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        using (PlanetWroxEntities myEntities = new PlanetWroxEntities())
+        {
+            var allGenres = from genre in myEntities.Genres
+                            orderby genre.Name
+                            select new { genre.Name, genre.Reviews };
+            Repeater1.DataSource = allGenres;
+            Repeater1.DataBind();
+        }
     }
 }
